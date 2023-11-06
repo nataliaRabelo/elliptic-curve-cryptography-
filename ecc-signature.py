@@ -10,6 +10,7 @@ from cryptography.hazmat.primitives import hashes
 
 # Geração de chaves usando ECC
 def generate_ecc_keys():
+    # Complexidade: Considerada O(1) para curvas de tamanho fixo como P-256.
     # Gera um par de chaves privada e pública usando a curva P-256
     private_key = ec.generate_private_key(ec.SECP256R1(), default_backend())
     public_key = private_key.public_key()
@@ -17,11 +18,13 @@ def generate_ecc_keys():
 
 # Criar uma assinatura digital usando a chave privada
 def sign_data(private_key, data):
+    # Complexidade: Considerada O(log n), onde 'n' é o número de bits da ordem do grupo da curva.
     # Assina os dados usando a chave privada e ECDSA com SHA256
     return private_key.sign(data, ec.ECDSA(hashes.SHA256()))
 
 # Verificar uma assinatura digital usando a chave pública
 def verify_signature(public_key, signature, data):
+    # Complexidade: Similar à assinatura, O(log n), devido à necessidade de realizar operações pontuais na curva.
     # Verifica a assinatura dos dados usando a chave pública e ECDSA com SHA256
     try:
         public_key.verify(signature, data, ec.ECDSA(hashes.SHA256()))
